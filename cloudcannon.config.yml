@@ -1,0 +1,7 @@
+
+collections_config:
+  blog:
+    path: blog
+    output: true
+    name: Entradas del Blog
+    icon: article
