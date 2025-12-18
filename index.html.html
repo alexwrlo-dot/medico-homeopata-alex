@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="ProShield - Seguro médico profesional premium. Protege tu práctica médica con las mejores coberturas y tecnología Glassmorphism.">
+    <meta name="author" content="ProShield Medical">
+    <title>ProShield - Seguro Médico Profesional</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ProShield - Protección Médica Elite">
+    <meta property="og:description" content="Obtén tu seguro médico profesional con proceso 70% automatizado.">
+    <meta property="og:image" content="https://medico-homeopata-alex.pages.dev/img/social-preview.jpg">
+    <meta property="og:url" content="https://medico-homeopata-alex.pages.dev/">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <style>
+        /* ESTILOS GLASSMORPHISM PROSHIELD */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #667eea;
+            --accent-color: #f093fb;
+            --text-light: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            background: #0f0c29;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .bg-animated {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .bg-overlay { position: absolute; width: 100%; height: 100%; background: rgba(15, 12, 41, 0.5); }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: 0.3s;
+        }
+        header {
+            position: sticky; top: 20px; margin: 20px 5%; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--accent-color); }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { text-decoration: none; color: white; font-weight: 500; }
+        section { padding: 5rem 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 3rem; }
+        
+        /* Formulario y Botones */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 1.2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: white;
+        }
+        .btn-primary {
+            width: 100%; padding: 1rem; border-radius: 50px; border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; font-weight: bold; cursor: pointer;
+        }
+        .success-message { display: none; padding: 1rem; background: rgba(0,255,0,0.2); border-radius: 10px; margin-top: 1rem; text-align: center; }
+        
+        /* Grid del Blog */
+        #blog-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .post-card { padding: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="bg-animated"><div class="bg-overlay"></div></div>
+
+    <header class="glass">
+        <div class="logo">🛡️ ProShield</div>
+        <nav>
+            <ul>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#quote">Cotizar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero" style="text-align: center;">
+        <h1>Seguro Médico Profesional Premium</h1>
+        <p>Automatización y respaldo para especialistas de la salud.</p>
+    </section>
+
+    <section id="blog">
+        <h2 class="section-title">Blog Médico</h2>
+        <div id="blog-list">Cargando artículos...</div>
+    </section>
+
+    <section id="quote">
+        <div class="glass" style="max-width: 600px; margin: 0 auto;">
+            <h2 style="margin-bottom: 2rem; text-align: center;">Solicitar Cotización</h2>
+            
+            <form action="https://formspree.io/f/xgoweoqp" method="POST" id="quoteForm">
+                <input type="hidden" name="_next" value="https://medico-homeopata-alex.pages.dev/">
+                <input type="hidden" name="_subject" value="Nueva consulta: ProShield Medical">
+
+                <div class="form-group">
+                    <label>Nombre del Médico:</label>
+                    <input type="text" name="nombre" required placeholder="Dr. Alex">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico:</label>
+                    <input type="email" name="email" required placeholder="doctor@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label>Especialidad:</label>
+                    <select name="especialidad">
+                        <option>Medicina General</option>
+                        <option>Homeopatía</option>
+                        <option>Cirugía</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mensaje:</label>
+                    <textarea name="mensaje" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Enviar Solicitud →</button>
+                <div class="success-message" id="successMsg">✓ ¡Enviado con éxito!</div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // CARGA AUTOMÁTICA DEL BLOG DESDE GITHUB
+        const repoUser = "alexwrlo-dot";
+        const repoName = "medico-homeopata-alex";
+
+        async function fetchBlog() {
+            const list = document.getElementById('blog-list');
+            try {
+                const res = await fetch(`https://api.github.com/repos/${repoUser}/${repoName}/contents/blog`);
+                const data = await res.json();
+                if(!data.length) { list.innerHTML = "No hay artículos aún."; return; }
+                
+                list.innerHTML = "";
+                for(let file of data) {
+                    if(file.name.endsWith('.md')) {
+                        const content = await fetch(file.download_url).then(r => r.text());
+                        const div = document.createElement('div');
+                        div.className = "glass post-card";
+                        div.innerHTML = marked.parse(content);
+                        list.appendChild(div);
+                    }
+                }
+            } catch (e) { list.innerHTML = "Error cargando el blog."; }
+        }
+
+        // FEEDBACK DEL FORMULARIO
+        document.getElementById('quoteForm').addEventListener('submit', () => {
+            document.getElementById('successMsg').style.display = "block";
+        });
+
+        fetchBlog();
+    </script>
+</body>
+</html>
