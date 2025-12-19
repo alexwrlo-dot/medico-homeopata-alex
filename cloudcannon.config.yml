@@ -1,7 +1,19 @@
-
+# Configura la carpeta donde vivirán los artículos
 collections_config:
   blog:
     path: blog
     output: true
     name: Entradas del Blog
     icon: article
+
+# Esto habilita el editor visual y de contenido
+_enabled_editors:
+  - content
+  - visual
+
+# Define qué campos debe tener cada post nuevo
+_inputs:
+  title:
+    type: text
+  date:
+    type: date
