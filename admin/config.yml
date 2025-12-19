@@ -1,1 +1,18 @@
+backend:
+  name: github
+  repo: alexwrlo-dot/medico-homeopata-alex # Tu usuario y repositorio
+  branch: main # Tu rama principal
 
+media_folder: "img/blog" # Carpeta para las fotos de tus artículos
+public_folder: "/img/blog"
+
+collections:
+  - name: "blog"
+    label: "Mis Entradas"
+    folder: "blog" # La carpeta donde se guardarán los .md
+    create: true # Te permite crear nuevos posts
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "datetime" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
