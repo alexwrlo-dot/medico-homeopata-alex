@@ -4,3 +4,8 @@ collections_config:
     output: true
     name: Entradas del Blog
     icon: article
+
+# Esto activa el editor para que el médico pueda escribir
+_enabled_editors:
+  - content
+  - visual
