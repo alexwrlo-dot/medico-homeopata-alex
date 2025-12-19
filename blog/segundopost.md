@@ -6,3 +6,4 @@ image: "/img/blog/foto-1.jpg"
 
 Aquí comienza tu contenido. Puedes usar **negritas**, *cursivas* y listas. 
 Para poner otra foto en medio del texto usa: ![Descripción](/img/blog/otra-foto.jpg)
+a ver aver TODO BIEN 
