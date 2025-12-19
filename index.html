@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         /* --- CONFIGURACIÓN VISUAL (NEUMORFISMO VIBRANTE) --- */
@@ -24,22 +24,27 @@
             --shadow-light: #ffffff;
             --shadow-dark: #a3b1c6;
             
-            --neu-out: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            --neu-out: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
             --neu-in: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
             
-            --radius: 25px;
+            --radius: 20px; /* Radio ligeramente menor para móvil */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        html { scroll-behavior: smooth; }
+        /* CORRECCIÓN DE DESBORDAMIENTO HORIZONTAL */
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Nunito', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            padding-bottom: 120px;
-            overflow-x: hidden;
+            padding-bottom: 100px; /* Espacio menú inferior */
         }
 
         /* --- UI COMPONENTES --- */
@@ -47,15 +52,15 @@
             background: var(--bg);
             border-radius: var(--radius);
             box-shadow: var(--neu-out);
-            padding: 25px;
+            padding: 20px; /* Padding reducido para ganar espacio */
             margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.4);
-            transition: transform 0.3s ease;
+            width: 100%; /* Asegura que no exceda el contenedor */
         }
         
         .neu-btn {
             display: inline-flex; align-items: center; justify-content: center;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border-radius: 50px;
             background: var(--bg);
             box-shadow: var(--neu-out);
@@ -64,110 +69,116 @@
             text-decoration: none;
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            width: auto;
             user-select: none;
         }
         
         .neu-btn.primary { background: var(--gradient); color: white; }
         .neu-btn.secondary { color: var(--secondary); }
-        .neu-btn:active { box-shadow: var(--neu-in); transform: scale(0.95); }
+        .neu-btn:active { box-shadow: var(--neu-in); transform: scale(0.96); }
 
         /* Inputs */
         input, select, textarea {
-            width: 100%; padding: 15px; border-radius: 15px;
+            width: 100%; padding: 12px; border-radius: 12px;
             background: var(--bg); border: none;
             box-shadow: var(--neu-in);
             color: var(--text-main);
-            margin-bottom: 20px; outline: none;
-            font-family: inherit;
+            margin-bottom: 15px; outline: none;
+            font-family: inherit; font-size: 16px; /* Evita zoom en iOS/Android inputs */
         }
-        input:focus, textarea:focus { box-shadow: var(--neu-in), 0 0 0 2px var(--primary); }
+        input:focus, textarea:focus { box-shadow: var(--neu-in), 0 0 0 1px var(--primary); }
 
         /* --- NAVEGACIÓN --- */
         .nav-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 500px;
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; /* Ancho seguro */
+            max-width: 400px;
             background: var(--bg);
-            border-radius: 35px;
+            border-radius: 30px;
             box-shadow: var(--neu-out);
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 10px 0; z-index: 1000;
+            display: flex; justify-content: space-evenly; align-items: center;
+            padding: 8px 0; z-index: 1000;
         }
 
         .nav-item {
-            color: #a0aec0; font-size: 1.4rem;
-            width: 55px; height: 55px;
+            color: #a0aec0; font-size: 1.2rem;
+            width: 45px; height: 45px;
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             transition: 0.3s; text-decoration: none;
         }
         .nav-item.active { color: var(--secondary); box-shadow: var(--neu-in); }
 
-        /* --- MODAL (VENTANA EMERGENTE ARTÍCULO) --- */
+        /* --- MODAL (POP-UP) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(224, 229, 236, 0.85); /* Fondo semitransparente del mismo tono */
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: none; /* Oculto por defecto */
-            justify-content: center; align-items: center;
-            padding: 20px;
-            opacity: 0; transition: opacity 0.3s ease;
+            background: rgba(224, 229, 236, 0.9);
+            z-index: 2000; display: none;
+            justify-content: center; align-items: flex-end; /* Sale de abajo en móvil */
+            padding: 0;
         }
 
-        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
 
         .modal-content {
             background: var(--bg);
-            width: 100%; max-width: 800px; max-height: 85vh;
-            border-radius: 30px;
-            box-shadow: var(--neu-out);
-            padding: 30px;
+            width: 100%; height: 90vh; /* Ocupa casi toda la pantalla en móvil */
+            border-top-left-radius: 30px; border-top-right-radius: 30px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            padding: 25px;
             overflow-y: auto;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.5);
-            animation: slideUp 0.4s ease forwards;
         }
 
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* Estilos del Markdown dentro del Modal */
-        #modal-body h1, #modal-body h2 { color: var(--primary); margin-top: 20px; margin-bottom: 10px; }
-        #modal-body p { margin-bottom: 15px; line-height: 1.7; color: #4a5568; }
-        #modal-body ul { margin-left: 20px; margin-bottom: 15px; }
-        #modal-body img { max-width: 100%; border-radius: 15px; margin: 15px 0; box-shadow: var(--neu-out); }
-        #modal-body blockquote { border-left: 4px solid var(--secondary); padding-left: 15px; font-style: italic; color: #718096; }
-
         .close-modal-btn {
-            position: absolute; top: 20px; right: 20px;
+            position: sticky; top: 0; right: 0; float: right;
             width: 40px; height: 40px; border-radius: 50%;
             background: var(--bg); box-shadow: var(--neu-out);
             display: flex; align-items: center; justify-content: center;
-            color: var(--secondary); cursor: pointer; font-size: 1.2rem;
-            border: none;
+            color: var(--secondary); cursor: pointer; border: none; z-index: 10;
         }
-        .close-modal-btn:hover { color: #dc2626; box-shadow: var(--neu-in); }
 
-        /* --- EXTRAS --- */
-        .container { padding: 20px; max-width: 800px; margin: 0 auto; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .price-tag { font-size: 1.3rem; font-weight: 900; display: block; margin: 10px 0; }
-        .bg-decor { position: fixed; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.6; }
+        /* --- LAYOUT GRID RESPONSIVE --- */
+        .container { 
+            padding: 20px 15px; /* Padding lateral seguro */
+            width: 100%; 
+            max-width: 900px; 
+            margin: 0 auto; 
+        }
 
+        .grid-responsive { 
+            display: grid; 
+            grid-template-columns: 1fr; /* 1 COLUMNA EN MÓVIL (SOLUCIÓN) */
+            gap: 25px; 
+        }
+
+        .price-tag { font-size: 1.2rem; font-weight: 800; display: block; margin: 10px 0; }
+        
+        /* FONDO */
+        .bg-decor { position: fixed; top:0; left:0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden;}
+        .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.5; }
+
+        /* AJUSTES PC (MEDIA QUERY) */
         @media (min-width: 768px) {
-            .nav-bar { top: 20px; bottom: auto; }
-            body { padding-top: 100px; padding-bottom: 0; }
-            .grid-2 { grid-template-columns: repeat(3, 1fr); }
+            .nav-bar { top: 20px; bottom: auto; width: 500px; }
+            body { padding-top: 80px; padding-bottom: 0; }
+            .grid-responsive { grid-template-columns: repeat(3, 1fr); } /* 3 columnas solo en PC */
+            .modal-content { 
+                height: auto; max-height: 85vh; width: 800px; 
+                border-radius: 30px; align-self: center; 
+            }
+            .modal-overlay { align-items: center; padding: 20px; }
         }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="bg-decor">
-        <div class="blob" style="top:-10%; right:-10%; width:300px; height:300px; background:rgba(6,182,212,0.2);"></div>
-        <div class="blob" style="bottom:10%; left:-10%; width:400px; height:400px; background:rgba(244,63,94,0.15);"></div>
+        <div class="blob" style="top:-50px; right:-50px; width:200px; height:200px; background:rgba(6,182,212,0.3);"></div>
+        <div class="blob" style="bottom:10%; left:-50px; width:250px; height:250px; background:rgba(244,63,94,0.2);"></div>
     </div>
 
     <nav class="nav-bar">
@@ -182,41 +193,43 @@
             <button class="close-modal-btn" onclick="closeModal()">
                 <i class="fas fa-times"></i>
             </button>
-            <div id="modal-body">
+            <div id="modal-body" style="margin-top: 10px; line-height: 1.6;">
                 </div>
         </div>
     </div>
 
     <div class="container">
         
-        <section id="inicio" style="text-align: center; padding: 40px 0;">
-            <div class="neu-card" style="display:inline-block; padding:10px; border-radius:50%;">
+        <section id="inicio" style="text-align: center; padding: 30px 0;">
+            <div class="neu-card" style="display:inline-block; padding:8px; border-radius:50%; width: auto;">
                 <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=150&q=80" 
-                     style="width:100px; height:100px; border-radius:50%; object-fit:cover;" alt="Doctor">
+                     style="width:90px; height:90px; border-radius:50%; object-fit:cover; display:block;" alt="Doctor">
             </div>
-            <h1 style="font-size: 2.5rem; margin-top: 10px; color: #2d3748;">Dr. <span style="color:var(--primary);">Vitalidad</span></h1>
-            <p style="color: #718096; margin-bottom: 30px;">Medicina Integrativa & Forense</p>
+            <h1 style="font-size: 2rem; margin-top: 15px; color: #2d3748;">Dr. <span style="color:var(--primary);">Vitalidad</span></h1>
+            <p style="color: #718096; margin-bottom: 25px; font-size: 0.95rem;">Medicina Integrativa & Forense</p>
             
-            <div style="display: flex; gap: 15px; justify-content: center;">
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <a href="#contacto" class="neu-btn primary">Agendar Cita</a>
                 <a href="#tienda" class="neu-btn">Ver Recursos</a>
             </div>
         </section>
 
         <section id="blog">
-            <h2 style="color:var(--text-main); margin-bottom:20px;">Últimos Artículos</h2>
+            <h2 style="color:var(--text-main); margin-bottom:20px; font-size: 1.5rem;">Artículos</h2>
             <div id="blog-list">
                 <div class="neu-card" style="text-align:center;">
-                    <i class="fas fa-sync fa-spin" style="color:var(--primary);"></i> Cargando contenido...
+                    <i class="fas fa-sync fa-spin" style="color:var(--primary);"></i> Cargando...
                 </div>
             </div>
         </section>
 
         <section id="tienda">
-            <h2 style="color:var(--text-main); margin-bottom:20px;">Farmacia Digital</h2>
-            <div class="grid-2">
+            <h2 style="color:var(--text-main); margin-bottom:20px; font-size: 1.5rem;">Tienda Digital</h2>
+            
+            <div class="grid-responsive">
+                
                 <div class="neu-card" style="text-align:center;">
-                    <i class="fas fa-headphones-alt fa-3x" style="color:var(--primary); margin-bottom:15px;"></i>
+                    <i class="fas fa-headphones-alt fa-2x" style="color:var(--primary); margin-bottom:10px;"></i>
                     <h3>Neuro-Audio</h3>
                     <p style="font-size:0.85rem; color:#718096;">Reprogramación mental.</p>
                     <span class="price-tag">$19.99</span>
@@ -226,9 +239,9 @@
                 </div>
 
                 <div class="neu-card" style="text-align:center;">
-                    <i class="fas fa-first-aid fa-3x" style="color:var(--secondary); margin-bottom:15px;"></i>
+                    <i class="fas fa-first-aid fa-2x" style="color:var(--secondary); margin-bottom:10px;"></i>
                     <h3>Botiquín PDF</h3>
-                    <p style="font-size:0.85rem; color:#718096;">Guía de primeros auxilios.</p>
+                    <p style="font-size:0.85rem; color:#718096;">Guía primeros auxilios.</p>
                     <span class="price-tag">$9.99</span>
                     <button class="neu-btn secondary" style="width:100%;" onclick="buyProduct('Guía Botiquín', '9.99')">
                         <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Comprar
@@ -236,28 +249,32 @@
                 </div>
 
                 <div class="neu-card" style="text-align:center;">
-                    <i class="fas fa-user-md fa-3x" style="color:var(--primary); margin-bottom:15px;"></i>
-                    <h3>Tele-Consulta</h3>
+                    <i class="fas fa-user-md fa-2x" style="color:var(--primary); margin-bottom:10px;"></i>
+                    <h3>Consulta Online</h3>
                     <p style="font-size:0.85rem; color:#718096;">Sesión Zoom 45min.</p>
                     <span class="price-tag">$45.00</span>
                     <button class="neu-btn secondary" style="width:100%;" onclick="buyProduct('Consulta Online', '45.00')">
                         <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Agendar
                     </button>
                 </div>
+
             </div>
         </section>
 
         <section id="contacto">
-            <h2 style="color:var(--text-main); margin-bottom:20px;">Escríbeme</h2>
+            <h2 style="color:var(--text-main); margin-bottom:20px; font-size: 1.5rem;">Contacto</h2>
             <div class="neu-card">
                 <form action="https://formspree.io/f/xgoweoqp" method="POST" id="contact-form">
-                    <label>Nombre</label>
+                    <label style="font-size:0.9rem; margin-left:5px;">Nombre</label>
                     <input type="text" name="name" required placeholder="Tu nombre">
-                    <label>Email</label>
+                    
+                    <label style="font-size:0.9rem; margin-left:5px;">Email</label>
                     <input type="email" name="email" required placeholder="tu@email.com">
-                    <label>Mensaje</label>
-                    <textarea name="message" rows="4" placeholder="¿Cómo te sientes hoy?"></textarea>
-                    <button type="submit" class="neu-btn primary" style="width:100%;">Enviar Mensaje</button>
+                    
+                    <label style="font-size:0.9rem; margin-left:5px;">Mensaje</label>
+                    <textarea name="message" rows="3" placeholder="Escribe aquí..."></textarea>
+                    
+                    <button type="submit" class="neu-btn primary" style="width:100%;">Enviar</button>
                     <div id="form-status" style="margin-top:15px; text-align:center; display:none;"></div>
                 </form>
             </div>
@@ -269,11 +286,9 @@
         const WHATSAPP_NUMBER = "5215555555555"; 
         const GITHUB_USER = "alexwrlo-dot";
         const GITHUB_REPO = "medico-homeopata-alex";
-        
-        // Almacén de artículos cargados para no volver a pedirlos
         let loadedPosts = [];
 
-        // --- 1. CARGA DE BLOG (MODIFICADA PARA MODAL) ---
+        // --- BLOG LOADER ---
         async function loadBlog() {
             const list = document.getElementById('blog-list');
             try {
@@ -283,75 +298,63 @@
                 if (!res.ok) throw new Error();
                 
                 list.innerHTML = ""; 
-                loadedPosts = []; // Reiniciar memoria
-
-                // Filtramos y mostramos
-                const recentFiles = files.filter(f => f.name.endsWith('.md')).slice(0, 6);
+                loadedPosts = []; 
+                const recentFiles = files.filter(f => f.name.endsWith('.md')).slice(0, 5);
 
                 if(recentFiles.length === 0) list.innerHTML = "<p>Próximamente.</p>";
 
                 for(let i = 0; i < recentFiles.length; i++) {
                     const f = recentFiles[i];
-                    // Obtenemos el texto crudo
                     const contentRes = await fetch(f.download_url);
                     const text = await contentRes.text();
                     
-                    // Guardamos en memoria para usarlo en el modal luego
                     loadedPosts.push({ title: f.name.replace('.md','').replace(/-/g,' '), content: text });
                     
                     const card = document.createElement('div');
                     card.className = "neu-card";
                     card.innerHTML = `
-                        <h3 style="color:var(--primary); font-size:1.2rem;">${loadedPosts[i].title}</h3>
-                        <div style="font-size:0.9rem; color:#718096; margin:10px 0;">
-                            ${marked.parse(text.substring(0, 100))}...
+                        <h3 style="color:var(--primary); font-size:1.1rem; margin-bottom:10px;">${loadedPosts[i].title}</h3>
+                        <div style="font-size:0.85rem; color:#718096; margin-bottom:15px;">
+                            ${marked.parse(text.substring(0, 80))}...
                         </div>
-                        <button class="neu-btn" style="padding:8px 20px; font-size:0.8rem; width:100%;" onclick="openArticle(${i})">
-                            Leer Artículo Completo
+                        <button class="neu-btn" style="padding:10px; width:100%; font-size:0.85rem;" onclick="openArticle(${i})">
+                            Leer Artículo
                         </button>
                     `;
                     list.appendChild(card);
                 }
             } catch (e) {
-                list.innerHTML = `<div class="neu-card"><p>Error conectando con el blog.</p></div>`;
+                list.innerHTML = `<div class="neu-card"><p>Error de conexión.</p></div>`;
             }
         }
 
-        // --- 2. LÓGICA DEL MODAL ---
+        // --- MODAL ---
         const modal = document.getElementById('article-modal');
         const modalBody = document.getElementById('modal-body');
 
         function openArticle(index) {
             const post = loadedPosts[index];
             if(!post) return;
-
-            // Convertir Markdown a HTML y mostrar
-            modalBody.innerHTML = `
-                <h2 style="font-size:2rem; margin-bottom:20px;">${post.title}</h2>
-                <div>${marked.parse(post.content)}</div>
-            `;
-            
+            modalBody.innerHTML = `<h2 style="color:var(--primary);">${post.title}</h2>` + marked.parse(post.content);
             modal.style.display = 'flex';
-            // Pequeño delay para permitir la animación de opacidad
             setTimeout(() => { modal.classList.add('show'); }, 10);
-            document.body.style.overflow = 'hidden'; // Bloquear scroll de fondo
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
             modal.classList.remove('show');
-            setTimeout(() => { modal.style.display = 'none'; }, 300); // Esperar animación
-            document.body.style.overflow = 'auto'; // Restaurar scroll
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+            document.body.style.overflow = 'auto'; 
         }
 
-        // Cerrar al hacer click fuera del contenido
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
 
-        // --- 3. FUNCIONES RESTANTES ---
+        // --- FUNCIONES EXTRA ---
         function buyProduct(product, price) {
-            const message = `Hola Dr., me interesa: ${product} ($${price}).`;
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            const msg = `Hola Dr., deseo comprar: ${product} ($${price}).`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         const navItems = document.querySelectorAll(".nav-item");
@@ -371,7 +374,7 @@
             e.preventDefault();
             const btn = form.querySelector("button");
             const status = document.getElementById("form-status");
-            btn.innerHTML = 'Enviando...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
                 const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
@@ -381,7 +384,7 @@
             } catch {
                 status.innerText = "Error."; status.style.color = "#ef4444"; status.style.display = "block";
             } finally {
-                btn.innerHTML = "Enviar Mensaje";
+                btn.innerHTML = "Enviar";
             }
         });
 
@@ -389,4 +392,3 @@
     </script>
 </body>
 </html>
-
