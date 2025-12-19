@@ -28,18 +28,17 @@
             --neu-in: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
             
             --radius: 25px;
-            --nav-height: 80px; /* Altura aprox del menú inferior/superior */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        html { scroll-behavior: smooth; scroll-padding-top: 100px; } /* Evita que el menú tape el contenido al hacer click */
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Nunito', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            padding-bottom: 120px; /* Espacio para menú móvil */
+            padding-bottom: 120px;
             overflow-x: hidden;
         }
 
@@ -54,7 +53,6 @@
             transition: transform 0.3s ease;
         }
         
-        /* Botones Generales */
         .neu-btn {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 12px 25px;
@@ -73,11 +71,7 @@
         
         .neu-btn.primary { background: var(--gradient); color: white; }
         .neu-btn.secondary { color: var(--secondary); }
-        
-        .neu-btn:active {
-            box-shadow: var(--neu-in);
-            transform: scale(0.95);
-        }
+        .neu-btn:active { box-shadow: var(--neu-in); transform: scale(0.95); }
 
         /* Inputs */
         input, select, textarea {
@@ -108,26 +102,60 @@
             display: flex; justify-content: center; align-items: center;
             transition: 0.3s; text-decoration: none;
         }
+        .nav-item.active { color: var(--secondary); box-shadow: var(--neu-in); }
 
-        .nav-item.active {
-            color: var(--secondary);
-            box-shadow: var(--neu-in);
+        /* --- MODAL (VENTANA EMERGENTE ARTÍCULO) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(224, 229, 236, 0.85); /* Fondo semitransparente del mismo tono */
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none; /* Oculto por defecto */
+            justify-content: center; align-items: center;
+            padding: 20px;
+            opacity: 0; transition: opacity 0.3s ease;
         }
 
-        /* --- SECCIONES --- */
+        .modal-overlay.show { display: flex; opacity: 1; }
+
+        .modal-content {
+            background: var(--bg);
+            width: 100%; max-width: 800px; max-height: 85vh;
+            border-radius: 30px;
+            box-shadow: var(--neu-out);
+            padding: 30px;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: slideUp 0.4s ease forwards;
+        }
+
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Estilos del Markdown dentro del Modal */
+        #modal-body h1, #modal-body h2 { color: var(--primary); margin-top: 20px; margin-bottom: 10px; }
+        #modal-body p { margin-bottom: 15px; line-height: 1.7; color: #4a5568; }
+        #modal-body ul { margin-left: 20px; margin-bottom: 15px; }
+        #modal-body img { max-width: 100%; border-radius: 15px; margin: 15px 0; box-shadow: var(--neu-out); }
+        #modal-body blockquote { border-left: 4px solid var(--secondary); padding-left: 15px; font-style: italic; color: #718096; }
+
+        .close-modal-btn {
+            position: absolute; top: 20px; right: 20px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--bg); box-shadow: var(--neu-out);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--secondary); cursor: pointer; font-size: 1.2rem;
+            border: none;
+        }
+        .close-modal-btn:hover { color: #dc2626; box-shadow: var(--neu-in); }
+
+        /* --- EXTRAS --- */
         .container { padding: 20px; max-width: 800px; margin: 0 auto; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        .price-tag {
-            font-size: 1.3rem; font-weight: 900; color: var(--text-main);
-            display: block; margin: 10px 0;
-        }
-
-        /* FONDO ANIMADO */
-        .bg-decor { position: fixed; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
+        .price-tag { font-size: 1.3rem; font-weight: 900; display: block; margin: 10px 0; }
+        .bg-decor { position: fixed; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.6; }
 
-        /* AJUSTES ESCRITORIO */
         @media (min-width: 768px) {
             .nav-bar { top: 20px; bottom: auto; }
             body { padding-top: 100px; padding-bottom: 0; }
@@ -143,11 +171,21 @@
     </div>
 
     <nav class="nav-bar">
-        <a href="#inicio" class="nav-item active" id="btn-inicio"><i class="fas fa-home"></i></a>
-        <a href="#blog" class="nav-item" id="btn-blog"><i class="fas fa-book-medical"></i></a>
-        <a href="#tienda" class="nav-item" id="btn-tienda"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#contacto" class="nav-item" id="btn-contacto"><i class="fas fa-envelope"></i></a>
+        <a href="#inicio" class="nav-item active"><i class="fas fa-home"></i></a>
+        <a href="#blog" class="nav-item"><i class="fas fa-book-medical"></i></a>
+        <a href="#tienda" class="nav-item"><i class="fas fa-shopping-cart"></i></a>
+        <a href="#contacto" class="nav-item"><i class="fas fa-envelope"></i></a>
     </nav>
+
+    <div id="article-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
 
     <div class="container">
         
@@ -177,11 +215,10 @@
         <section id="tienda">
             <h2 style="color:var(--text-main); margin-bottom:20px;">Farmacia Digital</h2>
             <div class="grid-2">
-                
                 <div class="neu-card" style="text-align:center;">
                     <i class="fas fa-headphones-alt fa-3x" style="color:var(--primary); margin-bottom:15px;"></i>
                     <h3>Neuro-Audio</h3>
-                    <p style="font-size:0.85rem; color:#718096;">Reprogramación mental para ansiedad.</p>
+                    <p style="font-size:0.85rem; color:#718096;">Reprogramación mental.</p>
                     <span class="price-tag">$19.99</span>
                     <button class="neu-btn secondary" style="width:100%;" onclick="buyProduct('Neuro-Audio', '19.99')">
                         <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Comprar
@@ -191,7 +228,7 @@
                 <div class="neu-card" style="text-align:center;">
                     <i class="fas fa-first-aid fa-3x" style="color:var(--secondary); margin-bottom:15px;"></i>
                     <h3>Botiquín PDF</h3>
-                    <p style="font-size:0.85rem; color:#718096;">Guía rápida de primeros auxilios.</p>
+                    <p style="font-size:0.85rem; color:#718096;">Guía de primeros auxilios.</p>
                     <span class="price-tag">$9.99</span>
                     <button class="neu-btn secondary" style="width:100%;" onclick="buyProduct('Guía Botiquín', '9.99')">
                         <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Comprar
@@ -201,13 +238,12 @@
                 <div class="neu-card" style="text-align:center;">
                     <i class="fas fa-user-md fa-3x" style="color:var(--primary); margin-bottom:15px;"></i>
                     <h3>Tele-Consulta</h3>
-                    <p style="font-size:0.85rem; color:#718096;">Sesión de 45min por Zoom.</p>
+                    <p style="font-size:0.85rem; color:#718096;">Sesión Zoom 45min.</p>
                     <span class="price-tag">$45.00</span>
                     <button class="neu-btn secondary" style="width:100%;" onclick="buyProduct('Consulta Online', '45.00')">
                         <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Agendar
                     </button>
                 </div>
-
             </div>
         </section>
 
@@ -215,19 +251,14 @@
             <h2 style="color:var(--text-main); margin-bottom:20px;">Escríbeme</h2>
             <div class="neu-card">
                 <form action="https://formspree.io/f/xgoweoqp" method="POST" id="contact-form">
-                    <label>Nombre Completo</label>
-                    <input type="text" name="name" required placeholder="Ej: Juan Pérez">
-                    
-                    <label>Correo Electrónico</label>
-                    <input type="email" name="email" required placeholder="juan@email.com">
-                    
+                    <label>Nombre</label>
+                    <input type="text" name="name" required placeholder="Tu nombre">
+                    <label>Email</label>
+                    <input type="email" name="email" required placeholder="tu@email.com">
                     <label>Mensaje</label>
-                    <textarea name="message" rows="4" placeholder="¿Cómo puedo ayudarte hoy?"></textarea>
-                    
-                    <button type="submit" class="neu-btn primary" style="width:100%; font-size:1.1rem;">
-                        Enviar Mensaje <i class="fas fa-paper-plane" style="margin-left:10px;"></i>
-                    </button>
-                    <div id="form-status" style="margin-top:15px; text-align:center; display:none; font-weight:bold;"></div>
+                    <textarea name="message" rows="4" placeholder="¿Cómo te sientes hoy?"></textarea>
+                    <button type="submit" class="neu-btn primary" style="width:100%;">Enviar Mensaje</button>
+                    <div id="form-status" style="margin-top:15px; text-align:center; display:none;"></div>
                 </form>
             </div>
         </section>
@@ -235,42 +266,14 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN ---
-        // Pon aquí tu número de WhatsApp (código de país + número, sin espacios ni +)
         const WHATSAPP_NUMBER = "5215555555555"; 
         const GITHUB_USER = "alexwrlo-dot";
         const GITHUB_REPO = "medico-homeopata-alex";
+        
+        // Almacén de artículos cargados para no volver a pedirlos
+        let loadedPosts = [];
 
-        // --- 1. FUNCIÓN DE COMPRA (WHATSAPP) ---
-        function buyProduct(product, price) {
-            const message = `Hola Dr., estoy interesado en adquirir: ${product} por $${price}. ¿Cuáles son los métodos de pago?`;
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
-
-        // --- 2. DETECCIÓN DE SCROLL (ACTUALIZAR MENÚ) ---
-        const sections = document.querySelectorAll("section");
-        const navItems = document.querySelectorAll(".nav-item");
-
-        window.addEventListener("scroll", () => {
-            let current = "";
-            sections.forEach((section) => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= (sectionTop - 200)) {
-                    current = section.getAttribute("id");
-                }
-            });
-
-            navItems.forEach((item) => {
-                item.classList.remove("active");
-                if (item.getAttribute("href").includes(current)) {
-                    item.classList.add("active");
-                }
-            });
-        });
-
-        // --- 3. LOGICA BLOG (GITHUB) ---
+        // --- 1. CARGA DE BLOG (MODIFICADA PARA MODAL) ---
         async function loadBlog() {
             const list = document.getElementById('blog-list');
             try {
@@ -279,28 +282,33 @@
                 
                 if (!res.ok) throw new Error();
                 
-                list.innerHTML = ""; // Limpiar loading
-                
-                // Mostrar solo los 3 primeros si hay muchos
-                const recentFiles = files.filter(f => f.name.endsWith('.md')).slice(0, 5);
-                
-                if(recentFiles.length === 0) list.innerHTML = "<p>Próximamente artículos.</p>";
+                list.innerHTML = ""; 
+                loadedPosts = []; // Reiniciar memoria
 
-                for(let f of recentFiles) {
+                // Filtramos y mostramos
+                const recentFiles = files.filter(f => f.name.endsWith('.md')).slice(0, 6);
+
+                if(recentFiles.length === 0) list.innerHTML = "<p>Próximamente.</p>";
+
+                for(let i = 0; i < recentFiles.length; i++) {
+                    const f = recentFiles[i];
+                    // Obtenemos el texto crudo
                     const contentRes = await fetch(f.download_url);
                     const text = await contentRes.text();
-                    const cleanTitle = f.name.replace('.md', '').replace(/-/g, ' ');
+                    
+                    // Guardamos en memoria para usarlo en el modal luego
+                    loadedPosts.push({ title: f.name.replace('.md','').replace(/-/g,' '), content: text });
                     
                     const card = document.createElement('div');
                     card.className = "neu-card";
                     card.innerHTML = `
-                        <h3 style="color:var(--primary); font-size:1.2rem;">${cleanTitle}</h3>
+                        <h3 style="color:var(--primary); font-size:1.2rem;">${loadedPosts[i].title}</h3>
                         <div style="font-size:0.9rem; color:#718096; margin:10px 0;">
                             ${marked.parse(text.substring(0, 100))}...
                         </div>
-                        <a href="${f.html_url}" target="_blank" class="neu-btn" style="padding:8px 20px; font-size:0.8rem;">
-                            Leer Artículo
-                        </a>
+                        <button class="neu-btn" style="padding:8px 20px; font-size:0.8rem; width:100%;" onclick="openArticle(${i})">
+                            Leer Artículo Completo
+                        </button>
                     `;
                     list.appendChild(card);
                 }
@@ -309,39 +317,76 @@
             }
         }
 
-        // --- 4. ENVÍO FORMULARIO (AJAX) ---
-        const form = document.getElementById("contact-form");
-        const status = document.getElementById("form-status");
+        // --- 2. LÓGICA DEL MODAL ---
+        const modal = document.getElementById('article-modal');
+        const modalBody = document.getElementById('modal-body');
 
+        function openArticle(index) {
+            const post = loadedPosts[index];
+            if(!post) return;
+
+            // Convertir Markdown a HTML y mostrar
+            modalBody.innerHTML = `
+                <h2 style="font-size:2rem; margin-bottom:20px;">${post.title}</h2>
+                <div>${marked.parse(post.content)}</div>
+            `;
+            
+            modal.style.display = 'flex';
+            // Pequeño delay para permitir la animación de opacidad
+            setTimeout(() => { modal.classList.add('show'); }, 10);
+            document.body.style.overflow = 'hidden'; // Bloquear scroll de fondo
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; }, 300); // Esperar animación
+            document.body.style.overflow = 'auto'; // Restaurar scroll
+        }
+
+        // Cerrar al hacer click fuera del contenido
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // --- 3. FUNCIONES RESTANTES ---
+        function buyProduct(product, price) {
+            const message = `Hola Dr., me interesa: ${product} ($${price}).`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        const navItems = document.querySelectorAll(".nav-item");
+        window.addEventListener("scroll", () => {
+            let current = "";
+            document.querySelectorAll("section").forEach((section) => {
+                if (pageYOffset >= (section.offsetTop - 200)) current = section.getAttribute("id");
+            });
+            navItems.forEach((item) => {
+                item.classList.remove("active");
+                if (item.getAttribute("href").includes(current)) item.classList.add("active");
+            });
+        });
+
+        const form = document.getElementById("contact-form");
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = form.querySelector("button");
-            const originalText = btn.innerHTML;
+            const status = document.getElementById("form-status");
+            btn.innerHTML = 'Enviando...';
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-            
-            const data = new FormData(e.target);
             try {
-                const response = await fetch(e.target.action, {
-                    method: 'POST', body: data, headers: { 'Accept': 'application/json' }
-                });
-                if(response.ok) {
-                    status.innerText = "¡Mensaje Enviado con Éxito!";
-                    status.style.color = "#10b981"; // Verde
-                    status.style.display = "block";
-                    form.reset();
+                const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
+                if(res.ok) {
+                    status.innerText = "¡Enviado!"; status.style.color = "#10b981"; status.style.display = "block"; form.reset();
                 } else throw new Error();
             } catch {
-                status.innerText = "Hubo un error. Intente nuevamente.";
-                status.style.color = "#ef4444"; // Rojo
-                status.style.display = "block";
+                status.innerText = "Error."; status.style.color = "#ef4444"; status.style.display = "block";
             } finally {
-                btn.innerHTML = originalText;
+                btn.innerHTML = "Enviar Mensaje";
             }
         });
 
-        // Iniciar todo
         document.addEventListener('DOMContentLoaded', loadBlog);
     </script>
 </body>
 </html>
+
