@@ -1,18 +1,23 @@
 backend:
-  name: git-gateway
-  branch: main # O 'master', tu rama principal
+  name: github
+  repo: "alexwrlo-dot/medico-homeopata-alex" # <--- ¡TU USUARIO/REPO AQUÍ!
+  branch: main # Rama principal (puede ser 'master')
 
-media_folder: "images/uploads" # Dónde se guardan las fotos que sube el cliente
-public_folder: "/images/uploads" # Dónde las busca el HTML
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+# Esto permite que el cliente vea el diseño real mientras escribe
+site_url: "https://tu-dominio-en-cloudflare.com"
 
 collections:
-  - name: "blog" # Nombre interno
-    label: "Artículos" # Lo que ve el cliente
-    folder: "blog" # La carpeta donde tienes tus .md actuales
-    create: true # Permite crear nuevos
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Nombre del archivo
-    fields: # Los campos que rellenará el cliente
+  - name: "blog"
+    label: "Artículos"
+    folder: "blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Fecha", name: "date", widget: "datetime"}
-      - {label: "Imagen Destacada", name: "thumbnail", widget: "image", required: false}
-      - {label: "Cuerpo", name: "body", widget: "markdown"}
+      - {label: "Descripción Corta", name: "description", widget: "text"}
+      - {label: "Imagen Principal", name: "image", widget: "image", required: false}
+      - {label: "Cuerpo del Artículo", name: "body", widget: "markdown"}
