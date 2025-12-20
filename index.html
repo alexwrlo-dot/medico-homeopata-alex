@@ -27,12 +27,12 @@
             --neu-out: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
             --neu-in: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
             
-            --radius: 20px; /* Radio ligeramente menor para móvil */
+            --radius: 20px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* CORRECCIÓN DE DESBORDAMIENTO HORIZONTAL */
+        /* CORRECCIÓN DE DESBORDAMIENTO */
         html, body {
             width: 100%;
             overflow-x: hidden;
@@ -44,18 +44,19 @@
             font-family: 'Nunito', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            padding-bottom: 100px; /* Espacio menú inferior */
+            padding-bottom: 100px;
         }
 
-        /* --- UI COMPONENTES --- */
+        /* --- COMPONENTES UI --- */
         .neu-card {
             background: var(--bg);
             border-radius: var(--radius);
             box-shadow: var(--neu-out);
-            padding: 20px; /* Padding reducido para ganar espacio */
+            padding: 20px;
             margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.4);
-            width: 100%; /* Asegura que no exceda el contenedor */
+            width: 100%;
+            transition: transform 0.2s ease;
         }
         
         .neu-btn {
@@ -72,6 +73,7 @@
             font-size: 0.9rem;
             width: auto;
             user-select: none;
+            transition: all 0.2s;
         }
         
         .neu-btn.primary { background: var(--gradient); color: white; }
@@ -85,15 +87,14 @@
             box-shadow: var(--neu-in);
             color: var(--text-main);
             margin-bottom: 15px; outline: none;
-            font-family: inherit; font-size: 16px; /* Evita zoom en iOS/Android inputs */
+            font-family: inherit; font-size: 16px;
         }
         input:focus, textarea:focus { box-shadow: var(--neu-in), 0 0 0 1px var(--primary); }
 
         /* --- NAVEGACIÓN --- */
         .nav-bar {
             position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
-            width: 92%; /* Ancho seguro */
-            max-width: 400px;
+            width: 92%; max-width: 400px;
             background: var(--bg);
             border-radius: 30px;
             box-shadow: var(--neu-out);
@@ -110,22 +111,23 @@
         }
         .nav-item.active { color: var(--secondary); box-shadow: var(--neu-in); }
 
-        /* --- MODAL (POP-UP) --- */
+        /* --- MODAL (LECTOR) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(224, 229, 236, 0.9);
+            background: rgba(224, 229, 236, 0.95);
             z-index: 2000; display: none;
-            justify-content: center; align-items: flex-end; /* Sale de abajo en móvil */
+            justify-content: center; align-items: flex-end;
             padding: 0;
+            opacity: 0; transition: opacity 0.3s;
         }
 
-        .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+        .modal-overlay.show { display: flex; opacity: 1; }
 
         .modal-content {
             background: var(--bg);
-            width: 100%; height: 90vh; /* Ocupa casi toda la pantalla en móvil */
+            width: 100%; height: 90vh;
             border-top-left-radius: 30px; border-top-right-radius: 30px;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
             padding: 25px;
             overflow-y: auto;
             position: relative;
@@ -139,17 +141,22 @@
             color: var(--secondary); cursor: pointer; border: none; z-index: 10;
         }
 
-        /* --- LAYOUT GRID RESPONSIVE --- */
+        /* Estilos dentro del Post */
+        #modal-body img { max-width: 100%; border-radius: 15px; margin: 10px 0; box-shadow: var(--neu-out); }
+        #modal-body h1 { color: var(--primary); line-height: 1.2; margin-bottom: 10px; }
+        #modal-body h2, #modal-body h3 { color: var(--text-main); margin-top: 20px; }
+        #modal-body p { margin-bottom: 15px; color: #4a5568; line-height: 1.6; }
+
+        /* --- GRID RESPONSIVO --- */
         .container { 
-            padding: 20px 15px; /* Padding lateral seguro */
-            width: 100%; 
-            max-width: 900px; 
+            padding: 20px 15px; 
+            width: 100%; max-width: 900px; 
             margin: 0 auto; 
         }
 
         .grid-responsive { 
             display: grid; 
-            grid-template-columns: 1fr; /* 1 COLUMNA EN MÓVIL (SOLUCIÓN) */
+            grid-template-columns: 1fr; /* Móvil: 1 columna */
             gap: 25px; 
         }
 
@@ -159,19 +166,17 @@
         .bg-decor { position: fixed; top:0; left:0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden;}
         .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.5; }
 
-        /* AJUSTES PC (MEDIA QUERY) */
+        /* PC / TABLET */
         @media (min-width: 768px) {
             .nav-bar { top: 20px; bottom: auto; width: 500px; }
             body { padding-top: 80px; padding-bottom: 0; }
-            .grid-responsive { grid-template-columns: repeat(3, 1fr); } /* 3 columnas solo en PC */
+            .grid-responsive { grid-template-columns: repeat(3, 1fr); }
             .modal-content { 
                 height: auto; max-height: 85vh; width: 800px; 
                 border-radius: 30px; align-self: center; 
             }
             .modal-overlay { align-items: center; padding: 20px; }
         }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -193,8 +198,7 @@
             <button class="close-modal-btn" onclick="closeModal()">
                 <i class="fas fa-times"></i>
             </button>
-            <div id="modal-body" style="margin-top: 10px; line-height: 1.6;">
-                </div>
+            <div id="modal-body" style="margin-top: 10px;"></div>
         </div>
     </div>
 
@@ -215,10 +219,10 @@
         </section>
 
         <section id="blog">
-            <h2 style="color:var(--text-main); margin-bottom:20px; font-size: 1.5rem;">Artículos</h2>
+            <h2 style="color:var(--text-main); margin-bottom:20px; font-size: 1.5rem;">Artículos Recientes</h2>
             <div id="blog-list">
                 <div class="neu-card" style="text-align:center;">
-                    <i class="fas fa-sync fa-spin" style="color:var(--primary);"></i> Cargando...
+                    <i class="fas fa-sync fa-spin" style="color:var(--primary);"></i> Cargando artículos...
                 </div>
             </div>
         </section>
@@ -227,7 +231,6 @@
             <h2 style="color:var(--text-main); margin-bottom:20px; font-size: 1.5rem;">Tienda Digital</h2>
             
             <div class="grid-responsive">
-                
                 <div class="neu-card" style="text-align:center;">
                     <i class="fas fa-headphones-alt fa-2x" style="color:var(--primary); margin-bottom:10px;"></i>
                     <h3>Neuro-Audio</h3>
@@ -257,7 +260,6 @@
                         <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Agendar
                     </button>
                 </div>
-
             </div>
         </section>
 
@@ -283,39 +285,68 @@
     </div>
 
     <script>
-        const WHATSAPP_NUMBER = "5215555555555"; 
+        // --- CONFIGURACIÓN ---
+        const WHATSAPP_NUMBER = "5215555555555"; // Pon tu número real
         const GITHUB_USER = "alexwrlo-dot";
         const GITHUB_REPO = "medico-homeopata-alex";
+        const BLOG_FOLDER = "blog"; // Carpeta donde el CMS guarda los posts
+        
         let loadedPosts = [];
 
-        // --- BLOG LOADER ---
+        // --- CARGADOR DE BLOG INTELIGENTE (Soporta CMS Frontmatter) ---
         async function loadBlog() {
             const list = document.getElementById('blog-list');
             try {
-                const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/blog`);
+                // Petición a la API de GitHub para leer la carpeta 'blog'
+                const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${BLOG_FOLDER}`);
                 const files = await res.json();
                 
                 if (!res.ok) throw new Error();
                 
                 list.innerHTML = ""; 
                 loadedPosts = []; 
+                
+                // Filtramos solo archivos .md y tomamos los 5 primeros
                 const recentFiles = files.filter(f => f.name.endsWith('.md')).slice(0, 5);
 
-                if(recentFiles.length === 0) list.innerHTML = "<p>Próximamente.</p>";
+                if(recentFiles.length === 0) {
+                    list.innerHTML = "<div class='neu-card'><p>Aún no hay artículos publicados.</p></div>";
+                    return;
+                }
 
                 for(let i = 0; i < recentFiles.length; i++) {
                     const f = recentFiles[i];
                     const contentRes = await fetch(f.download_url);
-                    const text = await contentRes.text();
+                    const rawText = await contentRes.text();
                     
-                    loadedPosts.push({ title: f.name.replace('.md','').replace(/-/g,' '), content: text });
+                    // --- PARSEO DE FRONTMATTER (Metadatos del CMS) ---
+                    // Separamos lo que está entre --- y --- del contenido real
+                    const parts = rawText.split('---');
+                    let title = f.name.replace('.md','').replace(/-/g,' '); // Título por defecto (nombre archivo)
+                    let body = rawText; // Cuerpo por defecto (todo el texto)
+
+                    if (parts.length >= 3) {
+                        // Si tiene frontmatter, extraemos el título real si existe
+                        const metadata = parts[1];
+                        const titleMatch = metadata.match(/title:\s*(.*)/);
+                        if (titleMatch) title = titleMatch[1].replace(/["']/g, "").trim();
+                        
+                        // El cuerpo es todo lo que sigue después del segundo ---
+                        body = parts.slice(2).join('---');
+                    }
+
+                    // Guardamos el post procesado en memoria
+                    loadedPosts.push({ title: title, content: body });
                     
+                    // Creamos la tarjeta visual
                     const card = document.createElement('div');
                     card.className = "neu-card";
                     card.innerHTML = `
-                        <h3 style="color:var(--primary); font-size:1.1rem; margin-bottom:10px;">${loadedPosts[i].title}</h3>
-                        <div style="font-size:0.85rem; color:#718096; margin-bottom:15px;">
-                            ${marked.parse(text.substring(0, 80))}...
+                        <h3 style="color:var(--primary); font-size:1.1rem; margin-bottom:10px; line-height:1.3;">
+                            ${title}
+                        </h3>
+                        <div style="font-size:0.85rem; color:#718096; margin-bottom:15px; height: 60px; overflow: hidden;">
+                            ${marked.parse(body).replace(/<[^>]*>?/gm, '').substring(0, 90)}...
                         </div>
                         <button class="neu-btn" style="padding:10px; width:100%; font-size:0.85rem;" onclick="openArticle(${i})">
                             Leer Artículo
@@ -324,44 +355,54 @@
                     list.appendChild(card);
                 }
             } catch (e) {
-                list.innerHTML = `<div class="neu-card"><p>Error de conexión.</p></div>`;
+                console.error(e);
+                list.innerHTML = `<div class="neu-card"><p>No se pudo conectar con el blog.</p></div>`;
             }
         }
 
-        // --- MODAL ---
+        // --- LÓGICA DE LA VENTANA MODAL ---
         const modal = document.getElementById('article-modal');
         const modalBody = document.getElementById('modal-body');
 
         function openArticle(index) {
             const post = loadedPosts[index];
             if(!post) return;
-            modalBody.innerHTML = `<h2 style="color:var(--primary);">${post.title}</h2>` + marked.parse(post.content);
+            
+            // Inyectamos el contenido convertido a HTML
+            modalBody.innerHTML = `
+                <h1 style="font-size:1.8rem; margin-bottom:20px;">${post.title}</h1>
+                <div>${marked.parse(post.content)}</div>
+            `;
+            
             modal.style.display = 'flex';
             setTimeout(() => { modal.classList.add('show'); }, 10);
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden'; // Bloquear scroll de fondo
         }
 
         function closeModal() {
             modal.classList.remove('show');
             setTimeout(() => { modal.style.display = 'none'; }, 300);
-            document.body.style.overflow = 'auto'; 
+            document.body.style.overflow = 'auto'; // Restaurar scroll
         }
 
+        // Cerrar al tocar fuera del contenido
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
 
-        // --- FUNCIONES EXTRA ---
+        // --- OTRAS FUNCIONES (Tienda, Nav, Form) ---
         function buyProduct(product, price) {
             const msg = `Hola Dr., deseo comprar: ${product} ($${price}).`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
+        // Scroll espía para el menú
         const navItems = document.querySelectorAll(".nav-item");
         window.addEventListener("scroll", () => {
             let current = "";
             document.querySelectorAll("section").forEach((section) => {
-                if (pageYOffset >= (section.offsetTop - 200)) current = section.getAttribute("id");
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 300)) current = section.getAttribute("id");
             });
             navItems.forEach((item) => {
                 item.classList.remove("active");
@@ -369,25 +410,39 @@
             });
         });
 
+        // Envío de Formulario
         const form = document.getElementById("contact-form");
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = form.querySelector("button");
             const status = document.getElementById("form-status");
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             
             try {
-                const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
+                const res = await fetch(e.target.action, { 
+                    method: 'POST', 
+                    body: new FormData(e.target), 
+                    headers: { 'Accept': 'application/json' } 
+                });
+                
                 if(res.ok) {
-                    status.innerText = "¡Enviado!"; status.style.color = "#10b981"; status.style.display = "block"; form.reset();
+                    status.innerText = "¡Mensaje Enviado!"; 
+                    status.style.color = "#10b981"; 
+                    status.style.display = "block"; 
+                    form.reset();
                 } else throw new Error();
             } catch {
-                status.innerText = "Error."; status.style.color = "#ef4444"; status.style.display = "block";
+                status.innerText = "Error al enviar."; 
+                status.style.color = "#ef4444"; 
+                status.style.display = "block";
             } finally {
-                btn.innerHTML = "Enviar";
+                btn.innerHTML = originalText;
             }
         });
 
+        // Iniciar
         document.addEventListener('DOMContentLoaded', loadBlog);
     </script>
 </body>
