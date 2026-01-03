@@ -307,9 +307,10 @@
             }
         }
 
-        function verPost(filename) {
-            alert(`Funcionalidad de post completo en desarrollo.\nPost: ${filename}`);
-        }
+      function verPost(filename) {
+    window.open(`https://github.com/${USER}/${REPO}/blob/main/blog/${filename}`, '_blank');
+}
+
 
         document.addEventListener('DOMContentLoaded', () => {
             cargarTodosLosBlogs();
