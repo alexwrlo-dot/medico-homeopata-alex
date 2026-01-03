@@ -308,8 +308,11 @@
         }
 
       function verPost(filename) {
-    window.open(`https://github.com/${USER}/${REPO}/blob/main/blog/${filename}`, '_blank');
+function verPost(filename) {
+    // Abrir el post completo en nueva ventana de tu sitio
+    window.open(`post.html?file=${filename}`, '_blank');
 }
+
 
 
         document.addEventListener('DOMContentLoaded', () => {
