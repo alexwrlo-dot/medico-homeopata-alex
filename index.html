@@ -403,6 +403,14 @@
                 </div>
             </div>
 
+            <!-- ✅ BOTÓN VER TODOS LOS ARTÍCULOS -->
+            <div id="view-all-container" class="text-center mt-12 hidden">
+                <a href="all-blogs.html" class="inline-flex items-center gap-3 bg-white hover:bg-white/90 text-primary px-8 py-4 rounded-full font-bold text-lg transition-all hover:gap-4 shadow-xl hover:shadow-2xl">
+                    Ver Todos los Artículos
+                    <span class="material-icons-outlined text-2xl">library_books</span>
+                </a>
+            </div>
+
         </div>
     </section>
 
@@ -592,6 +600,7 @@
             const loading = document.getElementById('blog-loading');
             const postsContainer = document.getElementById('blog-posts');
             const noPosts = document.getElementById('no-posts');
+            const viewAllContainer = document.getElementById('view-all-container');
 
             try {
                 // Obtener lista de archivos de la carpeta blog/
@@ -692,6 +701,11 @@
 
                 loading.classList.add('hidden');
                 postsContainer.classList.remove('hidden');
+
+                // Mostrar botón "Ver todos" si hay más de 3 artículos
+                if (mdFiles.length > 3) {
+                    viewAllContainer.classList.remove('hidden');
+                }
 
             } catch (error) {
                 console.error('Error cargando blog:', error);
