@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Todos los Artículos - Dr. Alex Reyes</title>
+    <meta name="description" content="Todos los artículos del blog sobre medicina homeopática">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#7c9be3",
+                        secondary: "#b599d9",
+                        accent: "#6b9aeb",
+                        neubg: "#e0e5ec",
+                        neutxt: "#4a5568",
+                        neutxtlight: "#718096",
+                    },
+                    fontFamily: {
+                        display: ["Nunito", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e0e5ec;
+            color: #4a5568;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                url('https://images.unsplash.com/photo-1.576091160399e+12-112ba8d25d1d?w=1200&auto=format&fit=crop'),
+                linear-gradient(135deg, #e0e5ec 0%, #f0f4f8 100%);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.08;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .neu-panel {
+            background: #e0e5ec;
+            border-radius: 24px;
+            box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+        }
+
+        .neu-card {
+            background: #e0e5ec;
+            border-radius: 20px;
+            box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-neu {
+            background: linear-gradient(145deg, #6b9aeb, #7c9be3);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-neu:hover {
+            box-shadow: 8px 8px 15px rgba(163, 177, 198, 0.7), -8px -8px 15px rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .blog-article {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .blog-article:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .blog-icon {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(124, 155, 227, 0.3);
+            border-radius: 50%;
+            border-top-color: #7c9be3;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            background: linear-gradient(145deg, #6b9aeb, #7c9be3);
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .back-button:hover {
+            box-shadow: 10px 10px 20px rgba(163, 177, 198, 0.7), -10px -10px 20px rgba(255, 255, 255, 0.6);
+            transform: translateX(-5px) scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+                width: 48px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón de retorno -->
+    <a href="index.html#blog" class="back-button" title="Volver al inicio">
+        <span class="material-icons-outlined text-3xl">arrow_back</span>
+    </a>
+
+    <div class="container mx-auto px-4 sm:px-6 py-20 sm:py-28 max-w-7xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-12 sm:mb-16">
+            <div class="neu-panel inline-block px-6 py-3 rounded-full mb-6">
+                <span class="text-2xl">📚</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-display mb-6 text-neutxt">
+                Todos los Artículos
+            </h1>
+            <p class="text-lg sm:text-xl text-neutxtlight max-w-2xl mx-auto">
+                Explora nuestra colección completa de artículos sobre medicina homeopática y salud integral
+            </p>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="text-center py-20">
+            <div class="loading mx-auto"></div>
+            <p class="text-neutxtlight mt-6 text-lg">Cargando todos los artículos...</p>
+        </div>
+
+        <!-- Blog Grid -->
+        <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 hidden">
+            <!-- Artículos se cargan aquí -->
+        </div>
+
+        <!-- Sin artículos -->
+        <div id="no-posts" class="text-center hidden">
+            <div class="neu-panel p-12 rounded-3xl max-w-md mx-auto">
+                <span class="material-icons-outlined text-8xl text-neutxtlight mb-6">article</span>
+                <h2 class="text-2xl font-bold text-neutxt mb-4">No hay artículos disponibles</h2>
+                <p class="text-neutxtlight mb-8">Próximamente publicaremos contenido interesante</p>
+                <a href="index.html" class="btn-neu px-8 py-4 rounded-full font-semibold inline-block">
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+
+        <!-- Contador de artículos -->
+        <div id="articles-count" class="text-center mt-12 hidden">
+            <div class="neu-card inline-block px-6 py-3 rounded-full">
+                <span class="font-semibold text-neutxt">
+                    Mostrando <span id="count-number" class="text-primary font-bold">0</span> artículos
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 🔧 CONFIGURACIÓN
+        const USER = "alexwrlo-dot";
+        const REPO = "medico-homeopata-alex";
+
+        // Cargar TODOS los artículos
+        async function cargarTodosLosArticulos() {
+            const loading = document.getElementById('loading');
+            const blogGrid = document.getElementById('blog-grid');
+            const noPosts = document.getElementById('no-posts');
+            const articlesCount = document.getElementById('articles-count');
+            const countNumber = document.getElementById('count-number');
+
+            try {
+                // Obtener lista de archivos
+                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/blog`);
+                
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el blog');
+                }
+
+                const files = await response.json();
+                
+                // Filtrar solo .md
+                const mdFiles = files.filter(file => 
+                    file.name.endsWith('.md') && file.name !== '.gitkeep'
+                );
+
+                if (mdFiles.length === 0) {
+                    loading.classList.add('hidden');
+                    noPosts.classList.remove('hidden');
+                    return;
+                }
+
+                // Ordenar por fecha (más recientes primero)
+                const sortedFiles = mdFiles.sort((a, b) => b.name.localeCompare(a.name));
+
+                // Cargar metadatos
+                const posts = await Promise.all(
+                    sortedFiles.map(async (file) => {
+                        const contentResponse = await fetch(file.download_url);
+                        const content = await contentResponse.text();
+                        
+                        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---/;
+                        const match = content.match(frontmatterRegex);
+                        
+                        let metadata = {
+                            title: file.name.replace('.md', ''),
+                            date: file.name.substring(0, 10),
+                            description: '',
+                            author: 'Dr. Alex Reyes',
+                            image: '',
+                            filename: file.name
+                        };
+
+                        if (match) {
+                            match[1].split('\n').forEach(line => {
+                                const [key, ...valueParts] = line.split(':');
+                                if (key && valueParts.length) {
+                                    const value = valueParts.join(':').trim().replace(/['"]/g, '');
+                                    metadata[key.trim()] = value;
+                                }
+                            });
+                        }
+
+                        return metadata;
+                    })
+                );
+
+                // Renderizar artículos
+                blogGrid.innerHTML = posts.map((post, index) => {
+                    const colors = [
+                        { bg: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)', icon: '🩺', color: 'blue' },
+                        { bg: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)', icon: '💊', color: 'purple' },
+                        { bg: 'linear-gradient(135deg, #34d399 0%, #10b981 100%)', icon: '🌿', color: 'green' },
+                        { bg: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)', icon: '⚕️', color: 'yellow' },
+                        { bg: 'linear-gradient(135deg, #f472b6 0%, #ec4899 100%)', icon: '🔬', color: 'pink' },
+                        { bg: 'linear-gradient(135deg, #fb923c 0%, #f97316 100%)', icon: '📋', color: 'orange' }
+                    ];
+                    const style = colors[index % colors.length];
+
+                    // Mostrar imagen si existe, sino mostrar icono
+                    const imageHTML = post.image 
+                        ? `<img src="${post.image}" alt="${post.title}" class="blog-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                           <div class="blog-icon" style="background: ${style.bg}; display: none;">
+                               ${style.icon}
+                           </div>`
+                        : `<div class="blog-icon" style="background: ${style.bg};">
+                               ${style.icon}
+                           </div>`;
+
+                    return `
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition blog-article" onclick="verPost('${post.filename}')">
+                            ${imageHTML}
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 text-sm text-gray-500 mb-3">
+                                    <span>📅 ${formatDate(post.date)}</span>
+                                    <span>⏱️ 5 min</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+                                    ${post.title}
+                                </h3>
+                                <p class="text-gray-600 mb-4 line-clamp-3">
+                                    ${post.description || 'Artículo sobre medicina homeopática científica'}
+                                </p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-full bg-${style.color}-500 text-white flex items-center justify-center text-sm font-bold">
+                                            Dr
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-700">${post.author}</span>
+                                    </div>
+                                    <span class="text-${style.color}-500 text-xl">→</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Actualizar contador
+                countNumber.textContent = posts.length;
+
+                // Mostrar todo
+                loading.classList.add('hidden');
+                blogGrid.classList.remove('hidden');
+                articlesCount.classList.remove('hidden');
+
+                // Scroll suave al inicio
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error cargando artículos:', error);
+                loading.classList.add('hidden');
+                noPosts.classList.remove('hidden');
+            }
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            const date = new Date(dateString);
+            return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+        }
+
+        // Abrir artículo
+        function verPost(filename) {
+            window.open(`post.html?file=${filename}`, '_blank');
+        }
+
+        // Cargar al iniciar
+        document.addEventListener('DOMContentLoaded', cargarTodosLosArticulos);
+    </script>
+
+</body>
+</html>
