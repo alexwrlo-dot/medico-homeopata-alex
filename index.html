@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Dr. Alex Reyes - Medicina Homeopática Científica Forense</title>
+    <meta name="description" content="Medicina homeopática científica basada en evidencia">
+    <meta name="author" content="Dr. Alex Reyes">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#7c9be3",
+                        secondary: "#b599d9",
+                        accent: "#6b9aeb",
+                        neubg: "#e0e5ec",
+                        neutxt: "#4a5568",
+                        neutxtlight: "#718096",
+                    },
+                    fontFamily: {
+                        display: ["Nunito", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background: #e0e5ec;
+            color: #4a5568;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&auto=format&fit=crop'),
+                linear-gradient(135deg, #e0e5ec 0%, #f0f4f8 100%);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.08;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .neu-panel {
+            background: #e0e5ec;
+            border-radius: 24px;
+            box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+        }
+
+        .neu-card {
+            background: #e0e5ec;
+            border-radius: 20px;
+            box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .neu-inset {
+            background: #e0e5ec;
+            box-shadow: inset 6px 6px 12px rgba(163, 177, 198, 0.5), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-neu {
+            background: linear-gradient(145deg, #6b9aeb, #7c9be3);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-neu:hover {
+            box-shadow: 8px 8px 15px rgba(163, 177, 198, 0.7), -8px -8px 15px rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 12px 12px 20px rgba(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #7c9be3 0%, #b599d9 50%, #6b9aeb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #7c9be3, #6b9aeb);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .blog-article {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .blog-article:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .blog-image-placeholder {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(124, 155, 227, 0.3);
+            border-radius: 50%;
+            border-top-color: #7c9be3;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-body">
+
+    <nav class="neu-panel fixed top-0 left-0 right-0 z-50 py-4 shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="material-icons-outlined text-3xl sm:text-4xl text-accent">health_and_safety</span>
+                    <span class="text-xl sm:text-2xl font-bold font-display text-neutxt">Dr. <span class="text-accent">Alex Reyes</span></span>
+                </div>
+
+                <div class="hidden lg:flex items-center space-x-6">
+                    <a href="#inicio" class="nav-link text-sm text-neutxtlight hover:text-neutxt">Inicio</a>
+                    <a href="#servicios" class="nav-link text-sm text-neutxtlight hover:text-neutxt">Servicios</a>
+                    <a href="#sobre-mi" class="nav-link text-sm text-neutxtlight hover:text-neutxt">Sobre Mí</a>
+                    <a href="#blog" class="nav-link text-sm text-neutxtlight hover:text-neutxt">Blog</a>
+                    <a href="#contacto" class="nav-link text-sm text-neutxtlight hover:text-neutxt">Contacto</a>
+                    <a href="#contacto" class="btn-neu px-6 py-2 rounded-full text-sm font-semibold">Agendar Cita</a>
+                </div>
+
+                <button class="lg:hidden neu-card p-2 rounded-lg" id="mobile-menu-btn">
+                    <span class="material-icons-outlined text-neutxt">menu</span>
+                </button>
+            </div>
+
+            <div class="hidden lg:hidden mt-4" id="mobile-menu">
+                <div class="flex flex-col space-y-3 neu-panel p-4 rounded-2xl">
+                    <a href="#inicio" class="text-neutxtlight hover:text-neutxt transition py-2 px-3 rounded-lg">Inicio</a>
+                    <a href="#servicios" class="text-neutxtlight hover:text-neutxt transition py-2 px-3 rounded-lg">Servicios</a>
+                    <a href="#sobre-mi" class="text-neutxtlight hover:text-neutxt transition py-2 px-3 rounded-lg">Sobre Mí</a>
+                    <a href="#blog" class="text-neutxtlight hover:text-neutxt transition py-2 px-3 rounded-lg">Blog</a>
+                    <a href="#contacto" class="text-neutxtlight hover:text-neutxt transition py-2 px-3 rounded-lg">Contacto</a>
+                    <a href="#contacto" class="btn-neu px-6 py-3 rounded-full font-semibold w-full text-center">Agendar Cita</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="inicio" class="pt-32 pb-16 sm:pt-40 sm:pb-24">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+                <div class="lg:w-1/2 text-center lg:text-left">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold font-display leading-tight mb-6 text-neutxt">
+                        Medicina Homeopática <span class="text-gradient">Científica Forense</span>
+                    </h1>
+                    <p class="text-base sm:text-lg lg:text-xl text-neutxtlight mb-8 max-w-2xl mx-auto lg:mx-0">
+                        Atención médica especializada basada en evidencia científica. Tratamientos personalizados para tu bienestar integral.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#contacto" class="btn-neu px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 hover:gap-3 transition-all">
+                            Agendar Consulta
+                            <span class="material-icons-outlined">arrow_forward</span>
+                        </a>
+                        <a href="#servicios" class="neu-card px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:shadow-xl transition text-neutxt flex items-center justify-center gap-2">
+                            Ver Servicios
+                            <span class="material-icons-outlined">info</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 w-full">
+                    <div class="neu-panel p-6 sm:p-8 rounded-3xl float-animation max-w-md mx-auto lg:max-w-none">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="neu-card p-4 sm:p-6 rounded-2xl text-center">
+                                <span class="material-icons-outlined text-3xl sm:text-4xl text-accent mb-2">favorite</span>
+                                <p class="text-2xl sm:text-3xl font-bold text-neutxt">98%</p>
+                                <p class="text-xs sm:text-sm text-neutxtlight">Satisfacción</p>
+                            </div>
+                            <div class="neu-card p-4 sm:p-6 rounded-2xl text-center">
+                                <span class="material-icons-outlined text-3xl sm:text-4xl text-secondary mb-2">groups</span>
+                                <p class="text-2xl sm:text-3xl font-bold text-neutxt">1000+</p>
+                                <p class="text-xs sm:text-sm text-neutxtlight">Pacientes</p>
+                            </div>
+                            <div class="neu-card p-4 sm:p-6 rounded-2xl text-center">
+                                <span class="material-icons-outlined text-3xl sm:text-4xl text-primary mb-2">verified</span>
+                                <p class="text-2xl sm:text-3xl font-bold text-neutxt">15+</p>
+                                <p class="text-xs sm:text-sm text-neutxtlight">Años Exp.</p>
+                            </div>
+                            <div class="neu-card p-4 sm:p-6 rounded-2xl text-center">
+                                <span class="material-icons-outlined text-3xl sm:text-4xl text-accent mb-2">psychology</span>
+                                <p class="text-2xl sm:text-3xl font-bold text-neutxt">24/7</p>
+                                <p class="text-xs sm:text-sm text-neutxtlight">Atención</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="py-16 sm:py-20">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-4 text-neutxt">Servicios Profesionales</h2>
+                <p class="text-base sm:text-lg text-neutxtlight max-w-2xl mx-auto">Atención médica especializada y personalizada</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                
+                <div class="neu-panel p-6 sm:p-8 rounded-3xl card-hover">
+                    <div class="neu-card w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-icons-outlined text-3xl sm:text-4xl text-accent">medical_services</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-3 text-neutxt">Consulta General</h3>
+                    <p class="text-sm sm:text-base text-neutxtlight mb-4">Evaluación médica integral y tratamiento homeopático personalizado basado en tu historia clínica.</p>
+                    <a href="#contacto" class="text-accent font-semibold flex items-center gap-2 hover:gap-3 transition-all text-sm sm:text-base">
+                        Agendar cita
+                        <span class="material-icons-outlined text-lg sm:text-xl">arrow_forward</span>
+                    </a>
+                </div>
+
+                <div class="neu-panel p-6 sm:p-8 rounded-3xl card-hover">
+                    <div class="neu-card w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-icons-outlined text-3xl sm:text-4xl text-primary">vaccines</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-3 text-neutxt">Tratamientos Especializados</h3>
+                    <p class="text-sm sm:text-base text-neutxtlight mb-4">Protocolos avanzados de medicina homeopática para condiciones crónicas y agudas.</p>
+                    <a href="#contacto" class="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all text-sm sm:text-base">
+                        Más información
+                        <span class="material-icons-outlined text-lg sm:text-xl">arrow_forward</span>
+                    </a>
+                </div>
+
+                <div class="neu-panel p-6 sm:p-8 rounded-3xl card-hover">
+                    <div class="neu-card w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-icons-outlined text-3xl sm:text-4xl text-secondary">monitor_heart</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-3 text-neutxt">Seguimiento Personalizado</h3>
+                    <p class="text-sm sm:text-base text-neutxtlight mb-4">Monitoreo continuo de tu evolución y ajuste de tratamientos según tus necesidades.</p>
+                    <a href="#contacto" class="text-secondary font-semibold flex items-center gap-2 hover:gap-3 transition-all text-sm sm:text-base">
+                        Conocer más
+                        <span class="material-icons-outlined text-lg sm:text-xl">arrow_forward</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="py-16 sm:py-20">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="neu-panel p-8 sm:p-12 rounded-3xl">
+                    <div class="text-center mb-8">
+                        <div class="neu-inset w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden">
+                            <img 
+                                src="https://raw.githubusercontent.com/alexwrlo-dot/medico-homeopata-alex/main/images/dr-alex-reyes.png" 
+                                alt="Dr. Alex Reyes" 
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-bold font-display mb-4 text-neutxt">Sobre Mí</h2>
+                    </div>
+                    
+                    <div class="space-y-4 text-neutxtlight">
+                        <p class="text-base sm:text-lg leading-relaxed">
+                            Médico especializado en homeopatía científica con más de 15 años de experiencia en el tratamiento integral de pacientes.
+                        </p>
+                        <p class="text-base sm:text-lg leading-relaxed">
+                            Mi enfoque combina la medicina tradicional homeopática con metodología científica moderna para ofrecer tratamientos efectivos y personalizados.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="neu-card p-6 rounded-2xl">
+                            <h3 class="font-bold text-lg mb-3 text-neutxt flex items-center gap-2">
+                                <span class="material-icons-outlined text-accent">school</span>
+                                Formación Académica
+                            </h3>
+                            <ul class="space-y-2 text-sm text-neutxtlight">
+                                <li>• Médico Cirujano</li>
+                                <li>• Especialista en Homeopatía</li>
+                                <li>• Medicina Forense</li>
+                            </ul>
+                        </div>
+                        <div class="neu-card p-6 rounded-2xl">
+                            <h3 class="font-bold text-lg mb-3 text-neutxt flex items-center gap-2">
+                                <span class="material-icons-outlined text-primary">workspace_premium</span>
+                                Certificaciones
+                            </h3>
+                            <ul class="space-y-2 text-sm text-neutxtlight">
+                                <li>• Homeopatía Científica</li>
+                                <li>• Medicina Integrativa</li>
+                                <li>• Investigación Clínica</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         ✅ BLOG DINÁMICO CON IMÁGENES
+    ========================================= -->
+    <section id="blog" class="py-16 sm:py-20" style="background: linear-gradient(135deg, #7c9be3 0%, #6b9aeb 100%);">
+        <div class="container mx-auto px-4 sm:px-6">
+            
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <div class="inline-block bg-white/20 px-4 py-2 rounded-full text-white text-sm font-semibold mb-4">
+                    📚 BLOG
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-4 text-white">
+                    Artículos Recientes
+                </h2>
+                <p class="text-lg text-white/90 max-w-2xl mx-auto">
+                    Conocimiento científico sobre homeopatía y salud integral
+                </p>
+            </div>
+
+            <!-- Loading -->
+            <div id="blog-loading" class="text-center">
+                <div class="loading mx-auto"></div>
+                <p class="text-white mt-4">Cargando artículos...</p>
+            </div>
+
+            <!-- Blog Grid -->
+            <div id="blog-posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto hidden">
+                <!-- Artículos se cargan dinámicamente aquí -->
+            </div>
+
+            <!-- Sin artículos -->
+            <div id="no-posts" class="text-center hidden">
+                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-3xl max-w-md mx-auto">
+                    <span class="material-icons-outlined text-6xl text-white mb-4">article</span>
+                    <p class="text-white">Próximamente publicaremos artículos</p>
+                </div>
+            </div>
+
+            <!-- ✅ BOTÓN VER TODOS LOS ARTÍCULOS -->
+            <div id="view-all-container" class="text-center mt-12 hidden">
+                <a href="all-blogs.html" class="inline-flex items-center gap-3 bg-white hover:bg-white/90 text-primary px-8 py-4 rounded-full font-bold text-lg transition-all hover:gap-4 shadow-xl hover:shadow-2xl">
+                    Ver Todos los Artículos
+                    <span class="material-icons-outlined text-2xl">library_books</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contacto" class="py-16 sm:py-20">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-4 text-neutxt">Contáctame</h2>
+                <p class="text-base sm:text-lg text-neutxtlight max-w-2xl mx-auto">¿Tienes preguntas? Envíame un mensaje o agenda una cita</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
+                
+                <div class="space-y-6 sm:space-y-8">
+                    
+                    <div class="neu-card p-6 sm:p-8 rounded-2xl flex items-start gap-4">
+                        <div class="neu-panel p-3 rounded-xl">
+                            <span class="material-icons-outlined text-2xl sm:text-3xl text-accent">location_on</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2 text-neutxt">Dirección</h3>
+                            <p class="text-sm sm:text-base text-neutxtlight">Ibarra, Imbabura</p>
+                            <p class="text-sm sm:text-base text-neutxtlight">Ecuador</p>
+                        </div>
+                    </div>
+
+                    <div class="neu-card p-6 sm:p-8 rounded-2xl flex items-start gap-4">
+                        <div class="neu-panel p-3 rounded-xl">
+                            <span class="material-icons-outlined text-2xl sm:text-3xl text-primary">phone</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2 text-neutxt">Teléfono</h3>
+                            <p class="text-sm sm:text-base text-neutxtlight">+593 XXX XXX XXX</p>
+                            <p class="text-sm sm:text-base text-neutxtlight">WhatsApp disponible</p>
+                        </div>
+                    </div>
+
+                    <div class="neu-card p-6 sm:p-8 rounded-2xl flex items-start gap-4">
+                        <div class="neu-panel p-3 rounded-xl">
+                            <span class="material-icons-outlined text-2xl sm:text-3xl text-secondary">email</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2 text-neutxt">Email</h3>
+                            <p class="text-sm sm:text-base text-neutxtlight">dr.alexreyes@ejemplo.com</p>
+                        </div>
+                    </div>
+
+                    <div class="neu-card p-6 sm:p-8 rounded-2xl">
+                        <h3 class="text-lg sm:text-xl font-bold mb-4 text-neutxt flex items-center gap-2">
+                            <span class="material-icons-outlined text-accent">schedule</span>
+                            Horarios de Atención
+                        </h3>
+                        <ul class="space-y-2 text-sm sm:text-base text-neutxtlight">
+                            <li class="flex justify-between">
+                                <span>Lunes - Viernes:</span>
+                                <span class="font-semibold">9:00 AM - 6:00 PM</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Sábados:</span>
+                                <span class="font-semibold">10:00 AM - 2:00 PM</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Domingos:</span>
+                                <span class="font-semibold">Cerrado</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="neu-panel p-6 sm:p-8 rounded-3xl">
+                    <form 
+                        action="https://formspree.io/f/TU_ID_AQUI" 
+                        method="POST"
+                        class="space-y-4 sm:space-y-6"
+                    >
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-neutxt">Nombre Completo</label>
+                            <input 
+                                type="text" 
+                                name="nombre"
+                                required
+                                class="w-full px-4 py-3 rounded-xl text-sm sm:text-base text-neutxt neu-inset"
+                                placeholder="Juan Pérez"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-neutxt">Email</label>
+                            <input 
+                                type="email" 
+                                name="email"
+                                required
+                                class="w-full px-4 py-3 rounded-xl text-sm sm:text-base text-neutxt neu-inset"
+                                placeholder="juan@ejemplo.com"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-neutxt">Teléfono</label>
+                            <input 
+                                type="tel" 
+                                name="telefono"
+                                class="w-full px-4 py-3 rounded-xl text-sm sm:text-base text-neutxt neu-inset"
+                                placeholder="+593 XXX XXX XXX"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-neutxt">Mensaje</label>
+                            <textarea 
+                                name="mensaje"
+                                required
+                                rows="5" 
+                                class="w-full px-4 py-3 rounded-xl resize-none text-sm sm:text-base text-neutxt neu-inset"
+                                placeholder="Cuéntame cómo puedo ayudarte..."
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full btn-neu py-3 rounded-full font-semibold text-base sm:text-lg">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 sm:py-16">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="neu-panel p-8 sm:p-12 rounded-3xl">
+                <div class="text-center">
+                    <div class="flex items-center justify-center space-x-2 mb-4">
+                        <span class="material-icons-outlined text-3xl text-accent">health_and_safety</span>
+                        <span class="text-xl font-bold font-display text-neutxt">Dr. <span class="text-accent">Alex Reyes</span></span>
+                    </div>
+                    <p class="text-sm sm:text-base text-neutxtlight mb-8">
+                        Medicina Homeopática Científica Forense
+                    </p>
+                    <div class="neu-inset h-px mb-8"></div>
+                    <p class="text-sm sm:text-base text-neutxtlight">
+                        &copy; 2026 Dr. Alex Reyes. Todos los derechos reservados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 🔧 CONFIGURACIÓN - Cambia esto por tu usuario y repo
+        const USER = "alexwrlo-dot";
+        const REPO = "medico-homeopata-alex";
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========================================
+        // ✅ CARGAR ARTÍCULOS CON IMÁGENES
+        // ========================================
+        async function cargarBlog() {
+            const loading = document.getElementById('blog-loading');
+            const postsContainer = document.getElementById('blog-posts');
+            const noPosts = document.getElementById('no-posts');
+            const viewAllContainer = document.getElementById('view-all-container');
+
+            try {
+                // Obtener lista de archivos de la carpeta blog/
+                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/blog`);
+                
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el blog');
+                }
+
+                const files = await response.json();
+                
+                // Filtrar solo archivos .md (excepto .gitkeep)
+                const mdFiles = files.filter(file => 
+                    file.name.endsWith('.md') && file.name !== '.gitkeep'
+                );
+
+                if (mdFiles.length === 0) {
+                    loading.classList.add('hidden');
+                    noPosts.classList.remove('hidden');
+                    return;
+                }
+
+                // Ordenar por fecha (más recientes primero) y tomar solo 3
+                const sortedFiles = mdFiles
+                    .sort((a, b) => b.name.localeCompare(a.name))
+                    .slice(0, 3);
+
+                // Cargar metadatos de cada artículo
+                const posts = await Promise.all(
+                    sortedFiles.map(async (file) => {
+                        const contentResponse = await fetch(file.download_url);
+                        const content = await contentResponse.text();
+                        
+                        // Parsear frontmatter
+                        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---/;
+                        const match = content.match(frontmatterRegex);
+                        
+                        let metadata = {
+                            title: file.name.replace('.md', ''),
+                            date: file.name.substring(0, 10),
+                            description: '',
+                            author: 'Dr. Alex Reyes',
+                            image: '', // ← Imagen del artículo
+                            filename: file.name
+                        };
+
+                        if (match) {
+                            match[1].split('\n').forEach(line => {
+                                const [key, ...valueParts] = line.split(':');
+                                if (key && valueParts.length) {
+                                    const value = valueParts.join(':').trim().replace(/['"]/g, '');
+                                    metadata[key.trim()] = value;
+                                }
+                            });
+                        }
+
+                        return metadata;
+                    })
+                );
+
+                // Renderizar artículos
+                postsContainer.innerHTML = posts.map((post, index) => {
+                    const colors = [
+                        { bg: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)', icon: '🩺', color: 'blue' },
+                        { bg: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)', icon: '💊', color: 'purple' },
+                        { bg: 'linear-gradient(135deg, #34d399 0%, #10b981 100%)', icon: '🌿', color: 'green' }
+                    ];
+                    const style = colors[index % 3];
+
+                    // Verificar si hay imagen
+                    const imageHTML = post.image 
+                        ? `<img src="${post.image}" alt="${post.title}" class="blog-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                           <div class="blog-image-placeholder" style="background: ${style.bg}; display: none;">${style.icon}</div>`
+                        : `<div class="blog-image-placeholder" style="background: ${style.bg};">${style.icon}</div>`;
+
+                    return `
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition cursor-pointer blog-article" onclick="verPost('${post.filename}')">
+                            ${imageHTML}
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 text-sm text-gray-500 mb-3">
+                                    <span>📅 ${formatDate(post.date)}</span>
+                                    <span>⏱️ 5 min</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">
+                                    ${post.title}
+                                </h3>
+                                <p class="text-gray-600 mb-4">
+                                    ${post.description || 'Artículo sobre medicina homeopática científica'}
+                                </p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-full bg-${style.color}-500 text-white flex items-center justify-center text-sm font-bold">
+                                            Dr
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-700">${post.author}</span>
+                                    </div>
+                                    <span class="text-${style.color}-500 text-xl">→</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                loading.classList.add('hidden');
+                postsContainer.classList.remove('hidden');
+
+                // Mostrar botón "Ver todos" si hay más de 3 artículos
+                if (mdFiles.length > 3) {
+                    viewAllContainer.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('Error cargando blog:', error);
+                loading.classList.add('hidden');
+                noPosts.classList.remove('hidden');
+            }
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            const date = new Date(dateString);
+            return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+        }
+
+        // Abrir artículo completo
+        function verPost(filename) {
+            window.open(`post.html?file=${filename}`, '_blank');
+        }
+
+        // Cargar blog al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarBlog);
+    </script>
+
+</body>
+</html>
