@@ -50,13 +50,22 @@
             min-height: 100vh;
             margin: 0;
             padding: 0;
+            /* Evita rebotes en iOS que a veces causan saltos visuales */
+            overscroll-behavior-y: none;
         }
 
-        /* --- FONDO CIENTÍFICO --- */
+        /* --- FONDO CIENTÍFICO + CORRECCIÓN ANTI-SALTO --- */
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            
+            /* CORRECCIÓN: Usar 100svh evita el salto al scrollear en móviles */
+            height: 100vh; /* Fallback */
+            height: 100svh; /* Smallest Viewport Height */
+            
             z-index: -1;
             
             /* Capa azulada + Imagen de fondo */
@@ -344,7 +353,7 @@
                                 src="./dr-alex-reyes.jpg" 
                                 alt="Dr. Alex Reyes" 
                                 class="w-full h-full object-cover"
-                                onerror="this.style.display='none'"
+                                onerror="this.src='https://randomuser.me/api/portraits/men/32.jpg'"
                             />
                         </div>
                         <h2 class="text-3xl sm:text-4xl font-bold font-display mb-4 text-neutxt">Sobre Mí</h2>
