@@ -45,14 +45,15 @@
         }
 
         body {
-            background-color: transparent; /* Importante para ver el fondo */
+            /* IMPORTANTE: Fondo transparente para ver la imagen de atrás */
+            background-color: transparent; 
             color: #4a5568;
             min-height: 100vh;
             margin: 0;
             padding: 0;
         }
 
-        /* --- FONDO CORREGIDO: Apunta a 'fondo-landing.jpg' --- */
+        /* --- FONDO CORREGIDO (Nombre correcto + Visible) --- */
         body::before {
             content: '';
             position: fixed;
@@ -60,29 +61,29 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -1; /* Se coloca detrás del contenido */
             
-            /* Nombre del archivo corregido según tu repositorio */
+            /* Nombre exacto de tu archivo en GitHub */
             background-image: 
-                linear-gradient(rgba(224, 229, 236, 0.7), rgba(224, 229, 236, 0.7)),
+                linear-gradient(rgba(224, 229, 236, 0.75), rgba(224, 229, 236, 0.75)),
                 url('./fondo-landing.jpg'); 
             
             background-size: cover;
             background-position: center;
-            opacity: 1; 
+            opacity: 1; /* Totalmente visible */
             pointer-events: none;
-            will-change: transform; /* Anti-lag activado */
+            will-change: transform;
         }
 
         .neu-panel {
-            background: rgba(224, 229, 236, 0.9);
+            background: rgba(224, 229, 236, 0.85); /* Semitransparente para efecto vidrio */
             border-radius: 24px;
             box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .neu-card {
-            background: rgba(224, 229, 236, 0.95);
+            background: rgba(224, 229, 236, 0.9);
             border-radius: 20px;
             box-shadow: 5px 5px 10px rgba(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
         }
@@ -344,7 +345,7 @@
                     <div class="text-center mb-8">
                         <div class="neu-inset w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden">
                             <img 
-                                src="https://raw.githubusercontent.com/alexwrlo-dot/medico-homeopata-alex/main/images/dr-alex-reyes.png" 
+                                src="./dr-alex-reyes.png" 
                                 alt="Dr. Alex Reyes" 
                                 class="w-full h-full object-cover"
                             />
@@ -560,7 +561,7 @@
                     </p>
                     <div class="neu-inset h-px mb-8"></div>
                     <p class="text-sm sm:text-base text-neutxtlight">
-                        &copy; 2026 Dr. Alex Reyes. Todos los derechos reservados.
+                        © 2026 Dr. Alex Reyes. Todos los derechos reservados.
                     </p>
                 </div>
             </div>
@@ -571,9 +572,6 @@
         const USER = "alexwrlo-dot";
         const REPO = "medico-homeopata-alex";
 
-        // ========================================
-        // ✅ MANEJO DE FORMULARIO AJAX
-        // ========================================
         const form = document.getElementById("contact-form");
         
         async function handleSubmit(event) {
@@ -616,7 +614,6 @@
             form.addEventListener("submit", handleSubmit);
         }
 
-        // Mobile Menu
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -633,7 +630,6 @@
             });
         });
 
-        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -647,9 +643,6 @@
             });
         });
 
-        // ========================================
-        // ✅ CARGAR ARTÍCULOS
-        // ========================================
         async function cargarBlog() {
             const loading = document.getElementById('blog-loading');
             const postsContainer = document.getElementById('blog-posts');
